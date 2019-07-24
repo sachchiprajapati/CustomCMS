@@ -1,0 +1,78 @@
+﻿@model CustomCMS.Core.Model.SliderModel
+
+<script src="~/Content/bower_components/jquery/dist/jquery-1.8.2.min.js"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Index", "Slider", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+            {
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        @if (Model.Id != null && Model.Id > 0)
+                        {
+                            <h3 class="box-title">Update Slider Detail</h3>
+                        }
+                        else
+                        {
+                            <h3 class="box-title">Add Slider Detail</h3>
+                        }
+                        <a href="@Url.Action("SliderList", "Slider")" class="btn btn-default pull-right"><i class="fa fa-angle-left"></i> Back </a>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-2">Title</label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(s => s.Title, new Dictionary<string, object>()
+                                                           {
+                                                                { "type", "text" },
+                                                                { "class", "form-control" },
+                                                                { "placeholder", "Enter Title" },
+                                                            })
+                                    @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2">Image</label>
+                                <div class="col-md-6">
+                                    @Html.TextBoxFor(s => s.File, new Dictionary<string, object>()
+                                                            {
+                                                                 {"type" , "File"} ,
+                                                                 {"name" , "File"},
+                                                                 {"id"   , "File"}
+                                                            })
+
+                                    @Html.ValidationMessageFor(m => m.File, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-4">
+                                    @if (Model.Id != null && Model.Id > 0)
+                                    {
+                                        <img src="~/UploadFiles/SliderImage/@Model.Image" alt="Image" height="100" width="100" border="0" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        @Html.HiddenFor(s => s.Id)
+                        <input type="submit" value="Submit" class="btn btn-primary pull-right" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var modVal = '@Model.Id';
+        if (modVal > 0) {
+            //Need to disable
+            $('#File').rules('remove');
+            //$("#File").rules("add", 'required');
+        }
+    });
+</script>
